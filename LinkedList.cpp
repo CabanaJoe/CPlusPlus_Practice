@@ -4,6 +4,8 @@
  * — one to insert a new node at the front, and one to print the list.
  */
 
+ // how to build: g++ LinkedList.cpp -o LinkedList
+
 #include <iostream>
 
 
@@ -68,6 +70,50 @@ void printList(Node* head)
 }
 
 
+/**
+ * Handle three cases:
+ * Value is at the head
+ * Value is in the middle
+ * Value is not found
+ * Use delete to free the memory of the removed node
+ * Reuse your insert and printList functions from the last problem
+ */
+
+void deleteNode(Node** head, int value)
+{
+    Node* current = *head;
+
+    if(current->data == value)
+    {
+        // move head forward
+        *head = current->next;
+        // delete current head because value is at beginning of list.
+        delete current;
+
+    }
+    else
+    {
+        while(current != NULL)
+        {
+            if(current->next->data == value)
+            {
+                // creating a temporary node to hold the value we are finding and going to delete
+                Node* temp = current->next;
+                //linking the nodes around the node we are going to delete
+                current->next = current->next->next;
+                // delete the node we are trying to find in the linked list
+                delete temp;
+                break;
+            }
+            // advance to the next node if value not found yet
+            current = current->next;
+        }
+
+    }
+
+}
+
+
 
 int main()
 {
@@ -83,6 +129,9 @@ int main()
     insert(&head, 6);
     insert(&head, 5);
 
+    printList(head);
+
+    deleteNode(&head, 4);
     printList(head);
 
 }
